@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday JOSHI🎉</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  color: white;
+  background: linear-gradient(270deg,#ff6ec4,#7873f5,#42e695);
+  background-size: 600% 600%;
+  animation: gradient 10s ease infinite;
+}
+
+@keyframes gradient {
+  0%{background-position:0%}
+  50%{background-position:100%}
+  100%{background-position:0%}
+}
+
+h1 { font-size: 3em; }
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background: #ff4081;
+  color: white;
+  cursor: pointer;
+  margin: 5px;
+}
+
+section { padding: 30px; }
+
+/* Countdown */
+#countdown {
+  font-size: 2em;
+  background: rgba(0,0,0,0.3);
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+/* Gallery */
+.gallery img {
+  width: 150px;
+  border-radius: 10px;
+  margin: 10px;
+  transition: 0.3s;
+}
+.gallery img:hover { transform: scale(1.1); }
+
+/* Balloon */
+.balloon {
+  width: 50px;
+  height: 70px;
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+}
+
+/* Memory cards */
+.card {
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  margin: 5px;
+  background: white;
+  color: black;
+  line-height: 60px;
+  font-size: 24px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Fireworks */
+#fireworks {
+  display: none;
+  font-size: 2em;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="title">Happy Birthday JOSHI🎉</h1>
+
+<input id="nameInput" placeholder="Enter Name">
+<button onclick="setName()">Set Name</button>
+<br><br>
+
+<button onclick="toggleMusic()">🎵 Music</button>
+
+<section>
+<h2>Countdown ⏳</h2>
+<div id="countdown"></div>
+</section>
+
+<section>
+<h2>Gallery 📸</h2>
+<div class="gallery">
+  <img src="C:\Users\acer\OneDrive\Pictures\Camera Roll\WIN_20260213_18_25_49_Pro.jpg">
+  <img src="C:\Users\acer\OneDrive\Pictures\Screenshots\spider man image.jpg">
+  <img src="C:\Users\acer\OneDrive\Pictures\wallpapers\katarzyna-grabowska-rMYGCAI_-zU-unsplash.jpg">
+</div>
+</section>
+
+<section>
+<h2>Message 💌</h2>
+<p id="typing"></p>
+</section>
+
+<section>
+<h2>Games 🎮</h2>
+
+<button onclick="startBalloonGame()">🎯 Balloon Game</button>
+<div id="balloonArea"></div>
+<p>Score: <span id="score">0</span></p>
+
+<div id="memoryGame"></div>
+
+<button onclick="gift()">🎁 Open Gift</button>
+<p id="giftMsg"></p>
+
+</section>
+
+<section>
+<button onclick="surprise()">Click for Surprise 🎆</button>
+<div id="fireworks">🎆🎇✨🎉</div>
+</section>
+
+<footer>
+Made with ❤️
+</footer>
+
+<audio id="music" src="https://www.bensound.com/bensound-music/bensound-happyrock.mp3"></audio>
+
+<script>
+// Name
+function setName(){
+  let name = document.getElementById("nameInput").value || "Friend";
+  document.getElementById("title").innerText = "Happy Birthday " + name + " 🎉";
+}
+
+// Countdown
+let birthday = new Date("jun 01, 2026 00:00:00").getTime();
+
+setInterval(()=>{
+  let now = new Date().getTime();
+  let diff = birthday - now;
+
+  let d = Math.floor(diff/(1000*60*60*24));
+  let h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+  let m = Math.floor((diff%(1000*60*60))/(1000*60));
+  let s = Math.floor((diff%(1000*60))/1000);
+
+  document.getElementById("countdown").innerText =
+    d+"d "+h+"h "+m+"m "+s+"s";
+},1000);
+
+// Typing message
+let msg="Wishing you happiness, fun, and lots of cake! 🎂";
+let i=0;
+function type(){
+  if(i<msg.length){
+    document.getElementById("typing").innerHTML+=msg.charAt(i);
+    i++;
+    setTimeout(type,40);
+  }
+}
+type();
+
+// Music
+function toggleMusic(){
+  let m=document.getElementById("music");
+  if(m.paused) m.play();
+  else m.pause();
+}
+
+// Balloon Game
+let score=0;
+function startBalloonGame(){
+  let area=document.getElementById("balloonArea");
+  area.innerHTML="";
+
+  for(let i=0;i<10;i++){
+    let b=document.createElement("div");
+    b.className="balloon";
+    b.style.left=Math.random()*window.innerWidth+"px";
+    b.style.top=Math.random()*300+"px";
+
+    b.onclick=function(){
+      score++;
+      document.getElementById("score").innerText=score;
+      b.remove();
+    };
+
+    area.appendChild(b);
+  }
+}
+
+// Memory Game
+let icons=["🎂","🎁","🎉","🎈"];
+let cards=[...icons,...icons].sort(()=>0.5-Math.random());
+let first=null;
+
+cards.forEach(icon=>{
+  let c=document.createElement("div");
+  c.className="card";
+
+  c.onclick=function(){
+    if(c.innerText===""){
+      c.innerText=icon;
+
+      if(!first){
+        first=c;
+      }else{
+        if(first.innerText!==c.innerText){
+          setTimeout(()=>{
+            first.innerText="";
+            c.innerText="";
+          },500);
+        }
+        first=null;
+      }
+    }
+  };
+
+  document.getElementById("memoryGame").appendChild(c);
+});
+
+// Gift
+function gift(){
+  let msgs=["🎉 Surprise!","💖 You are amazing!","🎂 Enjoy your day!"];
+  document.getElementById("giftMsg").innerText =
+    msgs[Math.floor(Math.random()*msgs.length)];
+}
+
+// Fireworks
+function surprise(){
+  let f=document.getElementById("fireworks");
+  f.style.display="block";
+  setTimeout(()=>{f.style.display="none"},3000);
+}
+</script>
+
+</body>
+</html>
